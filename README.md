@@ -1,9 +1,18 @@
 # Sentiment Analysis API
 
-This project provides a FastAPI-based sentiment analysis service that utilizes a pre-trained Hugging Face model for sentiment prediction.
+This project provides a FastAPI-based sentiment analysis service that utilizes a Fine-Tuned Hugging Face model for sentiment prediction.
 
-## Files in This Project
+Link to the Fine-Tuned Model: https://huggingface.co/Akirami/twitter-roberta-sentiment-analysiss-lr-1e-5
 
+## Files in this Project
+
+- **`NLP-Assignment.ipynb`**: This notebook contains the code for analyzing the tweet data and fine-tuning a Roberta Model on top of it.
+- **`deployment`**: Contains the files for deployment.
+- **`nlp_data.xlsx`**: Data used for training and testing the model.
+- **`test_predictions.csv/.xlsx`**: Contains the predictions for the test data that is present in `nlp_data.xlsx`
+- **`request_data.json`**: Contains an example JSON to test the endpoint.
+
+  ## Files in Deployment Folder
 - **`app.py`**: Contains the FastAPI application, including the health check and sentiment prediction endpoints.
 - **`model.py`**: Defines `SentimentModel`, which loads and uses the pre-trained model to make sentiment predictions.
 - **`requirements.txt`**: Lists all Python dependencies needed to run the application.
