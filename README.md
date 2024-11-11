@@ -13,6 +13,8 @@ Link to the ONNX Quantized Model: [Akirami/twitter-roberta-sentiment-analysiss-o
 ## Files in this Project
 
 - **`NLP-Assignment.ipynb`**: This notebook contains the code for analyzing the tweet data and fine-tuning a Roberta Model on top of it.
+- **`Optimum_ONNX_Runtime_Experimentation.ipynb`**: This notebook contains experimentation of converting the fine-tuned model into onnx format.
+- **`df_cleaned.csv`**: Contains the pre-processed version of train data located in `nlp_data.xlsx`
 - **`deployment`**: Contains the files for deployment.
 - **`nlp_data.xlsx`**: Data used for training and testing the model.
 - **`test_predictions.csv/.xlsx`**: Contains the predictions for the test data that is present in `nlp_data.xlsx`
