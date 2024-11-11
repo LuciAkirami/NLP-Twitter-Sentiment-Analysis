@@ -170,10 +170,11 @@ onx_cls = pipeline(task_type, model="Akirami/twitter-roberta-sentiment-analysiss
 
 ## TODO
 
-- [x] Convert the Model to Onnx and Run via OnnxRuntime / Optimum TensorRT /
+- [x] Convert the Model to Onnx and Run via OnnxRuntime / Optimum
+- [ ] Replace the existing model with ONNX within the deployments folder
 - [ ] Test the ONNX Model latency with TensorRT in a Nvidia Optimized Container
 - [ ] Quantize the Model and check the Inference and Performance
 - [ ] Try multiprocessing from Torch to speed up the Inference
 - [ ] Create a Deployment file for Kubernetes 
-- [ ] Setup scaling in Kubernetes and loading balancing via NGINIX
+- [ ] Setup scaling in Kubernetes and loading balancing via NGINX
 - [ ] Send the logs to a monitoring tool
