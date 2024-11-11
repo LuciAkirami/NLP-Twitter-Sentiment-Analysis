@@ -4,6 +4,12 @@ This project provides a FastAPI-based sentiment analysis service that utilizes a
 
 Link to the Fine-Tuned Model: https://huggingface.co/Akirami/twitter-roberta-sentiment-analysiss-lr-1e-5
 
+**Updated (Nov 11)**
+
+Link to the ONNX Quantized Model: [Akirami/twitter-roberta-sentiment-analysiss-onnx-quantized](https://huggingface.co/Akirami/twitter-roberta-sentiment-analysiss-onnx-quantized)
+
+(See below to know the performance compared to the vanilla model)
+
 ## Files in this Project
 
 - **`NLP-Assignment.ipynb`**: This notebook contains the code for analyzing the tweet data and fine-tuning a Roberta Model on top of it.
@@ -129,9 +135,41 @@ By following the steps above, you can deploy the sentiment analysis service to a
 
 Note: Created the deployment scripts using ChatGPT. Created a container and tested the endpoints to ensure everything is working perfectly
 
+
+## Update - Nov 11 -> ONNX Experimentation
+
+This table emphasizes the benefits of ONNX optimization, especially with quantization, which provides both the largest speedup and the smallest size. 
+
+- Everything was tested on CPU in Free Tier Google Colab.
+- The model has been converted to ONNX and quantized via the HuggingFace Optimum Library
+- The model inference was done through the same Optimum Library
+- For evaluation, the 1000 rows of the cleaned tweet data is taken
+
+| Model Variant         | Accuracy | Total Time (s) | Improvement from Original (%) | Samples per Second | Latency (s) | Size (MB) |
+|-----------------------|----------|----------------|-------------------------------|---------------------|-------------|-----------|
+| **Original Model**    | 0.599    | 147.82        | 0.00%                         | 6.77               | 0.148       | 499       |
+| **ONNX**              | 0.599    | 118.68        | 19.71%                        | 8.43               | 0.119       | 477       |
+| **ONNX Optimized**    | 0.599    | 103.06        | 30.28%                        | 9.70               | 0.103       | 477       |
+| **ONNX Quantized**    | **0.614**| **77.18**     | **47.78%**                    | **12.96**          | **0.077**   | **121**   |
+
+### Observations:
+- **Size Reduction**: The ONNX Quantizer model is significantly smaller, at 121 MB, compared to the original (499 MB) and other ONNX variants (477 MB). 
+- **Performance Gains**: The ONNX Quantizer model achieves nearly half the original model’s total time and a substantial reduction in size, enhancing both storage efficiency and processing speed. The Quantized Model should not be achieving greater accuracy, but it might be due to some randomness in the weights and the dataset quality
+- **ONNX Optimizations**: Both ONNX and ONNX Optimizer reduce the model size slightly (to 477 MB) while also delivering marked improvements in time and latency.
+
+The quantized onnx model has been deployed to the HuggingFace Hub and can be called via the following code
+Note: The latest optimum package is giving out errors, use the following version `optimum[exporters,onnxruntime]==1.19.0`
+```python
+from optimum.pipelines import pipeline
+
+task_type = "text-classification"
+onx_cls = pipeline(task_type, model="Akirami/twitter-roberta-sentiment-analysiss-onnx-quantized")
+```
+
 ## TODO
 
-- [ ] Convert the Model to Onnx and Run via TensorRT / OnnxRuntime
+- [x] Convert the Model to Onnx and Run via OnnxRuntime / Optimum TensorRT /
+- [ ] Test the ONNX Model latency with TensorRT in a Nvidia Optimized Container
 - [ ] Quantize the Model and check the Inference and Performance
 - [ ] Try multiprocessing from Torch to speed up the Inference
 - [ ] Create a Deployment file for Kubernetes 
